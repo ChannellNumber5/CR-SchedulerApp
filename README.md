@@ -10,3 +10,4 @@
  -- [Accessing the id attribute](https://stackoverflow.com/questions/3239598/how-can-i-get-the-id-of-an-element-using-jquery)
 
  -- [Accessing text in element with jquery](https://api.jquery.com/text/)
+        Also important to note the difference between accessing text and accessing the value of a textarea element.

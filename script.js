@@ -1,7 +1,7 @@
 const container = $(".container");
 var currentDate = moment().format("dddd MMMM Do, YYYY");
 var currentTime = moment().format("h");
-currentTime = 11;
+currentTime = 12;
 var amOrPm = moment().format("A");
 amOrPm = "AM";
 var timeArray = ["9AM","10AM","11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"];
@@ -11,7 +11,7 @@ var tasks = ["", "", "", "", "", "", "", "", ""];
 $("#currentDay").text(currentDate);
 console.log(currentTime + amOrPm);
 console.log(currentDate);
-
+let marker = null;
 for (let i = 0; i < timeArray.length; i++) {
     var newDiv = $("<div>");
     newDiv.attr("class", "time-block row" );
@@ -29,39 +29,50 @@ for (let i = 0; i < timeArray.length; i++) {
     
     if (timeArray[i] === currentTime + amOrPm) {
         desBlock.addClass("present");
-    } else if (currentTime > 5 && amOrPm == "PM") {
+        marker = i;
+    } else if (currentTime > 5 && currentTime < 12 && amOrPm == "PM") {
         desBlock.addClass("past");
-    } else if (currentTime < 9 && amOrPm == "AM") {
+    } else if ((currentTime < 9 || currentTime === 12) && amOrPm == "AM") {
         desBlock.addClass("future");
-    } else if (i >= 1 && amOrPm === "AM") {
-        desBlock.addClass("future");
+    } else if (marker === null) {
+        desBlock.addClass("past");
     } else {
-        desBlock.addClass("past");
+        desBlock.addClass("future");
     }
     container.append(newDiv);
 }
 
 container.on('click', function(event) {
     var clickedButton = $(event.target);
-    var hourEl = clickedButton.parent();
-    for (let i=0; i < timeArray.length; i++) {
-        if (hourEl.id == timeArray[i]) {
-            tasks[i] = hourEl.children(1).text();
+    console.log(clickedButton);
+    if (clickedButton.hasClass("saveBtn")){
+        var hourEl = clickedButton.parent();
+        console.log(hourEl.attr("id"));
+        for (let i=0; i < timeArray.length; i++) {
+            if (hourEl.attr("id") == timeArray[i]) {
+                tasks[i] = hourEl.children("textarea").val();
+                console.log(hourEl.children("textarea").val());
+            }
         }
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        console.log("input into localStorage");
+    } else {        
+        return;
     }
-    localStorage.setItem("tasks", JSON.stringify(tasks));    
 })
 
 function loadTasks() {
-    if (JSON.parse(localStorage.getItem("tasks")) == null){
+    console.log(tasks);
+    if (JSON.parse(localStorage.getItem("tasks")) == null) {
+        console.log("localStorage is empty");
         return;
     } else {
         tasks = JSON.parse(localStorage.getItem("tasks"));
         for (let i = 0; i < tasks.length; i++){
-            console.log(container.children().children(i));
-            // container.children(i).children(2).text(tasks[i]);
+            container.children("div").eq(i).children("textarea").val(tasks[i]);
         }
     }
+    console.log(tasks);
 }
 
 loadTasks();
