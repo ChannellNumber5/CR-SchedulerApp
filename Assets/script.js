@@ -1,9 +1,7 @@
 const container = $(".container");
 var currentDate = moment().format("dddd MMMM Do, YYYY");
 var currentTime = moment().format("h");
-currentTime = 12;
 var amOrPm = moment().format("A");
-amOrPm = "AM";
 var timeArray = ["9AM","10AM","11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"];
 var tasks = ["", "", "", "", "", "", "", "", ""];
 
@@ -25,6 +23,9 @@ for (let i = 0; i < timeArray.length; i++) {
     newDiv.append(desBlock);
     var saveBtn = $("<button>");
     saveBtn.attr("class", "saveBtn col-1");
+    var saveIcon = $("<i>");
+    saveIcon.addClass("fas fa-save");
+    saveBtn.append(saveIcon);
     newDiv.append(saveBtn);
     
     if (timeArray[i] === currentTime + amOrPm) {
@@ -32,7 +33,7 @@ for (let i = 0; i < timeArray.length; i++) {
         marker = i;
     } else if (currentTime > 5 && currentTime < 12 && amOrPm == "PM") {
         desBlock.addClass("past");
-    } else if ((currentTime < 9 || currentTime === 12) && amOrPm == "AM") {
+    } else if ((currentTime < 9 || currentTime == 12) && amOrPm == "AM") {
         desBlock.addClass("future");
     } else if (marker === null) {
         desBlock.addClass("past");
@@ -44,14 +45,12 @@ for (let i = 0; i < timeArray.length; i++) {
 
 container.on('click', function(event) {
     var clickedButton = $(event.target);
-    console.log(clickedButton);
     if (clickedButton.hasClass("saveBtn")){
         var hourEl = clickedButton.parent();
         console.log(hourEl.attr("id"));
         for (let i=0; i < timeArray.length; i++) {
             if (hourEl.attr("id") == timeArray[i]) {
                 tasks[i] = hourEl.children("textarea").val();
-                console.log(hourEl.children("textarea").val());
             }
         }
         localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -72,7 +71,6 @@ function loadTasks() {
             container.children("div").eq(i).children("textarea").val(tasks[i]);
         }
     }
-    console.log(tasks);
 }
 
 loadTasks();
