@@ -5,7 +5,7 @@ var amOrPm = moment().format("A");
 var timeArray = ["9AM","10AM","11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"];
 var tasks = ["", "", "", "", "", "", "", "", ""];
 
-//Changes text in p tag to the current date for the when the page is loaded
+//Changes text in p tag to the current date for the when the page is loaded and creates timeblocks for business hours between 0900 and 1700
 $("#currentDay").text(currentDate);
 console.log(currentTime + amOrPm);
 console.log(currentDate);
@@ -27,7 +27,7 @@ for (let i = 0; i < timeArray.length; i++) {
     saveIcon.addClass("fas fa-save");
     saveBtn.append(saveIcon);
     newDiv.append(saveBtn);
-    
+    // Marks timeblocks by color based on whether it's the current time, the past or future timeblocks using a marker to note when the current time is found and changing the colors based on that marker value
     if (timeArray[i] === currentTime + amOrPm) {
         desBlock.addClass("present");
         marker = i;
@@ -43,10 +43,11 @@ for (let i = 0; i < timeArray.length; i++) {
     container.append(newDiv);
 }
 
+// adds jquery event listener to the container of the timeblocks and then executes the save function when the save button or the save icon in the button is clicked
 container.on('click', function(event) {
     var clickedButton = $(event.target);
-    if (clickedButton.hasClass("saveBtn")){
-        var hourEl = clickedButton.parent();
+    if (clickedButton.hasClass("saveBtn") || clickedButton.hasClass("fa-save")){
+        var hourEl = clickedButton.parents(".time-block");
         console.log(hourEl.attr("id"));
         for (let i=0; i < timeArray.length; i++) {
             if (hourEl.attr("id") == timeArray[i]) {
@@ -58,8 +59,9 @@ container.on('click', function(event) {
     } else {        
         return;
     }
-})
+});
 
+//accesses the saved tasks in localStorage and has an if statement if localStorage is empty because the scheduler has not been used yet
 function loadTasks() {
     console.log(tasks);
     if (JSON.parse(localStorage.getItem("tasks")) == null) {
