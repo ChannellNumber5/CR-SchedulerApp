@@ -2,6 +2,12 @@
 
 This web application is designed to give you a hand in scheduling out your daily activities. It's designed to show you the current date and then, below, it gives you a basic  hourly scheduler for a standard business day (0900 - 1700, if you use military time). You are able to input your hourly tasks or activities and then, using the blue save button, you can save that entry into the scheduler. If you reload the scheduler, your entries will persist, until you decide to delete them - and save out the deleted entry.
 
+Click [here](https://channellnumber5.github.io/CR-SchedulerApp/) to visit the below page!
+
+![Project Screenshot](./Assets/channellnumber5.github.io_CR-SchedulerApp_(Surface%20Pro%207).png)
+
+
+
 For future updates to this application, the page could include a "reset" button to erase out all entries for a new day of tasks.
 
 In creating this application, there were 3 tricky pieces that inhibited functionality:
